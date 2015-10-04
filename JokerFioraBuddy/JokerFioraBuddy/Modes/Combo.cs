@@ -11,15 +11,16 @@ namespace JokerFioraBuddy.Modes
         public static Spell.Active Hydra { get; private set; }
         public static Spell.Targeted BOTRK { get; private set; }
         public static Spell.Targeted Cutlass { get; private set; }
+        public static Spell.Active Youmuus { get; private set; }
 
         public static ItemId TiamatID { get; private set; }
         public static ItemId HydraID { get; private set; }
         public static ItemId BOTRKID { get; private set; }
         public static ItemId CutlassID { get; private set; }
+        public static ItemId YomuusID { get; private set; }
 
         public override bool ShouldBeExecuted()
         {
-            // Only execute this mode when the orbwalker is on combo mode
             return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
         }
 
@@ -27,17 +28,26 @@ namespace JokerFioraBuddy.Modes
         {
                 foreach (InventorySlot item in ObjectManager.Player.InventoryItems)
                 {
+                    if (item.DisplayName.Contains("Youmuu"))
+                    {
+                        Youmuus = new Spell.Active(item.SpellSlot);
+                        YomuusID = item.Id;
+                        continue;
+                    }
+
                     if (item.DisplayName.Contains("Ruined King"))
                     {
                         BOTRK = new Spell.Targeted(item.SpellSlot, 550);
                         BOTRKID = item.Id;
                         Cutlass = null;
+                        continue;
                     }
 
                     else if (item.DisplayName.Contains("Bilgewater Cutlass"))
                     {
                         Cutlass = new Spell.Targeted(item.SpellSlot, 550);
                         CutlassID = item.Id;
+                        continue;
                     }
 
                     if (item.DisplayName.Contains("Hydra"))
@@ -45,12 +55,14 @@ namespace JokerFioraBuddy.Modes
                         Hydra = new Spell.Active(item.SpellSlot, 400);
                         HydraID = item.Id;
                         Tiamat = null;
+                        continue;
                     }
 
                     else if (item.DisplayName.Contains("Tiamat"))
                     {
                         Tiamat = new Spell.Active(item.SpellSlot, 385);
                         TiamatID = item.Id;
+                        continue;
                     }
                     
                 }
@@ -59,6 +71,14 @@ namespace JokerFioraBuddy.Modes
 
             if (target != null && target.IsValidTarget(R.Range))
             {
+                if (Settings.UseYomuus)
+                {
+                    if (Youmuus != null && Youmuus.IsReady())
+                    {
+                        Youmuus.Cast();
+                    }
+                }
+
                 if (Settings.UseQ && Q.IsReady() && target.IsValidTarget(Q.Range) && !target.IsZombie)
                     Q.Cast(target);
 

@@ -23,7 +23,7 @@ namespace JokerFioraBuddy.Modes
                 if (Settings.UseQ && Q.IsReady() && Player.Instance.ManaPercent > Settings.Mana && minion.Health <= Player.Instance.GetSpellDamage(minion, SpellSlot.Q))
                     Q.Cast(minion);
 
-                if (Settings.UseE && E.IsReady() && minion.IsValidTarget(200) && Player.Instance.ManaPercent > Settings.Mana && minion.Health <= 2 * Player.Instance.GetAutoAttackDamage(Player.Instance))
+                if (Settings.UseE && E.IsReady() && Player.Instance.ManaPercent > Settings.Mana && minion.Health <= 2 * Player.Instance.GetAutoAttackDamage(Player.Instance))
                     E.Cast();
             }
         }

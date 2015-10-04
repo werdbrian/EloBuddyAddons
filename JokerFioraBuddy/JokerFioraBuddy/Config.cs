@@ -125,6 +125,11 @@ namespace JokerFioraBuddy
                     get { return Menu["comboUseCutlassBOTRK"].Cast<CheckBox>().CurrentValue; }
                 }
 
+                public static bool UseYomuus
+                {
+                    get { return Menu["comboUseYomuus"].Cast<CheckBox>().CurrentValue; }
+                }
+
                 static Combo()
                 {
                     Menu.AddGroupLabel("Combo");
@@ -134,6 +139,7 @@ namespace JokerFioraBuddy
                     Menu.Add("comboUseR", new CheckBox("Use R"));
                     Menu.Add("comboUseTiamatHydra", new CheckBox("Use Tiamat / Hydra"));
                     Menu.Add("comboUseCutlassBOTRK", new CheckBox("Use Bilgewater Cutlass / Blade of the Ruined King"));
+                    Menu.Add("comboUseYomuus", new CheckBox("Use Youmuu's Ghostblade"));
                 }
 
                 public static void Initialize()

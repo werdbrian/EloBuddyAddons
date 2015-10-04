@@ -15,12 +15,15 @@ namespace JokerFioraBuddy.Modes
 
         public override void Execute()
         {
-            var minions = ObjectManager.Get<Obj_AI_Base>().OrderBy(m => m.Health).Where(m => m.IsMinion && m.IsEnemy && !m.IsDead);
-
-            foreach (var minion in minions)
+            if (Settings.UseQ)
             {
-                if (Player.Instance.ManaPercent >= Settings.Mana && Settings.UseQ && Q.IsReady() && minion.Health <= Player.Instance.GetSpellDamage(minion, SpellSlot.Q))
-                    Q.Cast(minion);
+                var minions = ObjectManager.Get<Obj_AI_Base>().OrderBy(m => m.Health).Where(m => m.IsMinion && m.IsEnemy && !m.IsDead);
+
+                foreach (var minion in minions)
+                {
+                    if (Player.Instance.ManaPercent >= Settings.Mana && Q.IsReady() && minion.Health <= Player.Instance.GetSpellDamage(minion, SpellSlot.Q))
+                        Q.Cast(minion);
+                }
             }
         }
     }
