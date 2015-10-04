@@ -13,7 +13,15 @@ namespace JokerFioraBuddy
         {
             Menu = MainMenu.AddMenu(MenuName, MenuName.ToLower());
             Menu.AddGroupLabel("Welcome to Joker Fiora Addon!");
-            Menu.AddLabel("Danny is awesome :)");
+            Menu.AddLabel("Features:");
+            Menu.AddLabel("- Epic Combo! 100-0 in 2 seconds.");
+            Menu.AddLabel("- Harass Mode with all spells.");
+            Menu.AddLabel("- Last Hit Mode with Q.");
+            Menu.AddLabel("- Lane Clear Mode with Q/E.");
+            Menu.AddLabel("- Auto-Ignite!");
+            Menu.AddLabel("- Minion last hit indicator and champion 1 shot combo indicator!");
+            Menu.AddLabel("All customizable! Featuring Youmuu's Ghostblade / Ravenous Hydra / Blade of the Ruined King");
+            Menu.AddLabel("Credits to: Danny - Main Coder. / Trees - Passive Manager");
 
             Modes.Initialize();
             Drawings.Initialize();
