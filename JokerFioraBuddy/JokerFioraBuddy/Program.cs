@@ -30,9 +30,10 @@ namespace JokerFioraBuddy
             Config.Initialize();
             SpellManager.Initialize();
             ModeManager.Initialize();
+            PassiveManager.Initialize();
 
             Text = new Text("", new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
-            
+
             Drawing.OnDraw += OnDraw;
         }
 

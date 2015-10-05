@@ -1,5 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
+using SharpDX;
 using System;
 using Settings = JokerFioraBuddy.Config.Modes.Combo;
 
@@ -7,18 +8,6 @@ namespace JokerFioraBuddy.Modes
 {
     public sealed class Combo : ModeBase
     {
-        public static Spell.Active Tiamat { get; private set; }
-        public static Spell.Active Hydra { get; private set; }
-        public static Spell.Targeted BOTRK { get; private set; }
-        public static Spell.Targeted Cutlass { get; private set; }
-        public static Spell.Active Youmuus { get; private set; }
-
-        public static ItemId TiamatID { get; private set; }
-        public static ItemId HydraID { get; private set; }
-        public static ItemId BOTRKID { get; private set; }
-        public static ItemId CutlassID { get; private set; }
-        public static ItemId YomuusID { get; private set; }
-
         public override bool ShouldBeExecuted()
         {
             return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
@@ -26,46 +15,6 @@ namespace JokerFioraBuddy.Modes
 
         public override void Execute()
         {
-                foreach (InventorySlot item in ObjectManager.Player.InventoryItems)
-                {
-                    if (item.DisplayName.Contains("Youmuu"))
-                    {
-                        Youmuus = new Spell.Active(item.SpellSlot);
-                        YomuusID = item.Id;
-                        continue;
-                    }
-
-                    if (item.DisplayName.Contains("Ruined King"))
-                    {
-                        BOTRK = new Spell.Targeted(item.SpellSlot, 550);
-                        BOTRKID = item.Id;
-                        Cutlass = null;
-                        continue;
-                    }
-
-                    else if (item.DisplayName.Contains("Bilgewater Cutlass"))
-                    {
-                        Cutlass = new Spell.Targeted(item.SpellSlot, 550);
-                        CutlassID = item.Id;
-                        continue;
-                    }
-
-                    if (item.DisplayName.Contains("Hydra"))
-                    {
-                        Hydra = new Spell.Active(item.SpellSlot, 400);
-                        HydraID = item.Id;
-                        Tiamat = null;
-                        continue;
-                    }
-
-                    else if (item.DisplayName.Contains("Tiamat"))
-                    {
-                        Tiamat = new Spell.Active(item.SpellSlot, 385);
-                        TiamatID = item.Id;
-                        continue;
-                    }
-                    
-                }
 
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
@@ -73,36 +22,67 @@ namespace JokerFioraBuddy.Modes
             {
                 if (Settings.UseYomuus)
                 {
-                    if (Youmuus != null && Youmuus.IsReady())
+                    if (PermaActive.Youmuus != null && PermaActive.Youmuus.IsReady())
                     {
-                        Youmuus.Cast();
+                        PermaActive.Youmuus.Cast();
                     }
                 }
 
                 if (Settings.UseQ && Q.IsReady() && target.IsValidTarget(Q.Range) && !target.IsZombie)
-                    Q.Cast(target);
+                {
+                    if (PassiveManager.GetPassivePosition(target) != Vector3.Zero)
+                    {
+                        Q.Cast(PassiveManager.GetPassivePosition(target));
+                        if (target.IsValidTarget(Player.Instance.GetAutoAttackRange()))
+                        {
+                            Orbwalker.ResetAutoAttack();
+                            Player.IssueOrder(GameObjectOrder.AttackUnit, PassiveManager.GetPassivePosition(target));
+                        }
+                    }
+                    else
+                        Q.Cast(target);
+                }
 
                 if (Settings.UseCutlassBOTRK)
                 {
-                    if (BOTRK != null && BOTRK.IsReady() && target.IsValidTarget(BOTRK.Range) && !target.IsZombie)
-                        BOTRK.Cast(target);
-                    else if (Cutlass != null && Cutlass.IsReady() && target.IsValidTarget(Cutlass.Range) && !target.IsZombie)
-                        Cutlass.Cast(target);
+                    if (PermaActive.BOTRK != null && PermaActive.BOTRK.IsReady() && target.IsValidTarget(PermaActive.BOTRK.Range) && !target.IsZombie)
+                        PermaActive.BOTRK.Cast(target);
+                    else if (PermaActive.Cutlass != null && PermaActive.Cutlass.IsReady() && target.IsValidTarget(PermaActive.Cutlass.Range) && !target.IsZombie)
+                        PermaActive.Cutlass.Cast(target);
                 }
-                    
+                
+                if (Settings.UseTiamatHydra)
+                {
+                    if (PermaActive.Hydra != null && PermaActive.Hydra.IsReady() && target.IsValidTarget(PermaActive.Hydra.Range) && !target.IsZombie)
+                    {
+                        PermaActive.Hydra.Cast();
+                        if (target.IsValidTarget(Player.Instance.GetAutoAttackRange()))
+                        {
+                            Orbwalker.ResetAutoAttack();
+                            if (PassiveManager.GetPassivePosition(target) != Vector3.Zero)
+                                Player.IssueOrder(GameObjectOrder.AttackUnit, PassiveManager.GetPassivePosition(target));
+                            else
+                                Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                        }
+                    }
+                }
+
                 if (Settings.UseE && E.IsReady() && target.IsValidTarget(E.Range) && !target.IsZombie)
+                {
                     E.Cast();
+                    if (target.IsValidTarget(Player.Instance.GetAutoAttackRange()))
+                    {
+                        Orbwalker.ResetAutoAttack();
+                        if (PassiveManager.GetPassivePosition(target) != Vector3.Zero)
+                            Player.IssueOrder(GameObjectOrder.AttackUnit, PassiveManager.GetPassivePosition(target));
+                        else
+                            Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                    }
+                }
 
                 if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range) && !target.IsZombie)
                     W.Cast(target);
 
-                if (Settings.UseTiamatHydra)
-                {
-                    if (Hydra != null && Hydra.IsReady() && target.IsValidTarget(Hydra.Range) && !target.IsZombie)
-                        Hydra.Cast();
-                    else if (Tiamat != null && Tiamat.IsReady() && target.IsValidTarget(Tiamat.Range) && !target.IsZombie)
-                        Tiamat.Cast();
-                }
 
                 if (Settings.UseR && R.IsReady() && target.IsValidTarget(R.Range) && !target.IsZombie)
                     R.Cast(target);

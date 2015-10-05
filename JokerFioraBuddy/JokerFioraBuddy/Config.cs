@@ -217,6 +217,11 @@ namespace JokerFioraBuddy
                     get { return Menu["lcUseE"].Cast<CheckBox>().CurrentValue; }
                 }
 
+                public static bool UseTiamatHydra
+                {
+                    get { return Menu["lcUseTiamatHydra"].Cast<CheckBox>().CurrentValue; }
+                }
+
                 public static int Mana
                 {
                     get { return Menu["lcMana"].Cast<Slider>().CurrentValue; }
@@ -227,6 +232,7 @@ namespace JokerFioraBuddy
                     Menu.AddGroupLabel("Lane Clear");
                     Menu.Add("lcUseQ", new CheckBox("Use Q"));
                     Menu.Add("lcUseE", new CheckBox("Use E"));
+                    Menu.Add("lcUseTiamatHydra", new CheckBox("Use Tiamat / Hydra"));
                     Menu.Add("lcMana", new Slider("Maximum mana usage in percent ({0}%)", 40));
                 }
 

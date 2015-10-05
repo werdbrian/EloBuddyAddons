@@ -21,20 +21,20 @@ namespace JokerFioraBuddy
 
         public static int CountPassive(this Obj_AI_Base target)
         {
-            return PassiveList.Count(obj => obj.PassiveDistance <= 50);
+            return PassiveList.Count(obj => obj.Position.Distance(target.ServerPosition) <= 50);
         }
 
         public static FioraPassive GetNearestPassive(this Obj_AI_Base target)
         {
             return
-                PassiveList.OrderBy(obj => obj.PassiveDistance).FirstOrDefault(obj => obj.IsValid && obj.IsVisible);
+                PassiveList.OrderBy(obj => obj.Position.Distance(target.ServerPosition)).FirstOrDefault(obj => obj.IsValid);
         }
 
         public static Vector3 GetPassivePosition(this Obj_AI_Base target)
         {
             var passive = target.GetNearestPassive();
 
-            if (passive == null || passive.PassiveDistance == 0)
+            if (passive == null || target.Distance(passive.Position) == 0)
                 return Vector3.Zero;
 
             var pos = Prediction.Position.PredictUnitPosition(target, SpellManager.Q.CastDelay);
@@ -74,19 +74,19 @@ namespace JokerFioraBuddy
                 return;
 
             if (emitter.Name.Contains("Fiora_Base_Passive") && DirectionList.Any(emitter.Name.Contains) && !emitter.Name.Contains("Warning"))
-            {
                 PassiveList.Add(new FioraPassive(emitter));
-            }
 
             if (emitter.Name.Contains("Fiora_Base_R_Mark") || (emitter.Name.Contains("Fiora_Base_R") && emitter.Name.Contains("Timeout")))
-            {
                 PassiveList.Add(new FioraPassive(emitter, true));
-            }
         }
 
         static void OnDelete(GameObject sender, EventArgs args)
         {
-            PassiveList.RemoveAll(obj => obj.NetworkId.Equals(sender.NetworkId));
+            if (sender.Name.Contains("Fiora_Base_Passive") && DirectionList.Any(sender.Name.Contains) && !sender.Name.Contains("Warning"))
+                PassiveList.RemoveAll(obj => obj.NetworkId.Equals(sender.NetworkId));
+
+            else if (sender.Name.Contains("Fiora_Base_R_Mark") || (sender.Name.Contains("Fiora_Base_R") && sender.Name.Contains("Timeout")))
+                PassiveList.RemoveAll(obj => obj.NetworkId.Equals(sender.NetworkId));
         }
 
         public static void Initialize()

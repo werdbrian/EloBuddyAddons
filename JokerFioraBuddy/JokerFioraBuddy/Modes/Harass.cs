@@ -1,5 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
+using SharpDX;
 using Settings = JokerFioraBuddy.Config.Modes.Harass;
 
 namespace JokerFioraBuddy.Modes
@@ -39,18 +40,54 @@ namespace JokerFioraBuddy.Modes
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
             if (Settings.UseQ && Q.IsReady() && target.IsValidTarget(Q.Range) && !target.IsZombie && Player.Instance.ManaPercent > Settings.Mana)
-                Q.Cast(target);
+            {
+                if (PassiveManager.GetPassivePosition(target) != Vector3.Zero)
+                    Q.Cast(PassiveManager.GetPassivePosition(target));
+                else
+                    Q.Cast(target);
+
+                Orbwalker.ResetAutoAttack();
+                Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+            }
 
             if (Settings.UseTiamatHydra)
             {
                 if (Hydra != null && Hydra.IsReady() && target.IsValidTarget(Hydra.Range) && !target.IsZombie)
+                {
                     Hydra.Cast();
+                    if (target.IsValidTarget(Player.Instance.GetAutoAttackRange()))
+                    {
+                        Orbwalker.ResetAutoAttack();
+                        Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                    }
+                }
                 else if (Tiamat != null && Tiamat.IsReady() && target.IsValidTarget(Tiamat.Range) && !target.IsZombie)
+                {
                     Tiamat.Cast();
+                    if (target.IsValidTarget(Player.Instance.GetAutoAttackRange()))
+                    {
+                        Orbwalker.ResetAutoAttack();
+                        if (PassiveManager.GetPassivePosition(target) != Vector3.Zero)
+                            Player.IssueOrder(GameObjectOrder.AttackUnit, PassiveManager.GetPassivePosition(target));
+                        else
+                            Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                    }
+                }
             }
 
+
             if (Settings.UseE && E.IsReady() && target.IsValidTarget(E.Range) && !target.IsZombie && Player.Instance.ManaPercent > Settings.Mana)
+            {
                 E.Cast();
+                if (target.IsValidTarget(Player.Instance.GetAutoAttackRange()))
+                {
+                    Orbwalker.ResetAutoAttack();
+                    if (PassiveManager.GetPassivePosition(target) != Vector3.Zero)
+                        Player.IssueOrder(GameObjectOrder.AttackUnit, PassiveManager.GetPassivePosition(target));
+                    else
+                        Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                }
+            }
 
             if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range) && !target.IsZombie && Player.Instance.ManaPercent > Settings.Mana)
                 W.Cast(target);
