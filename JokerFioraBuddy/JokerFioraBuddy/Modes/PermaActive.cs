@@ -36,59 +36,56 @@ namespace JokerFioraBuddy.Modes
         
         public override void Execute()
         {
-            if(Hydra == null || BOTRK == null || Cutlass == null || Youmuus == null || TriForce == null)
+            foreach (InventorySlot item in ObjectManager.Player.InventoryItems)
             {
-                foreach (InventorySlot item in ObjectManager.Player.InventoryItems)
+                if (item.DisplayName.Contains("Trinity Force"))
                 {
-                    if (item.DisplayName.Contains("Trinity Force") && TriForce == null)
-                    {
-                        TriForce = new Spell.Active(item.SpellSlot);
-                        TriForceID = item.Id;
-                        continue;
-                    }
+                    TriForce = new Spell.Active(item.SpellSlot);
+                    TriForceID = item.Id;
+                    continue;
+                }
 
-                    else if (item.DisplayName.Contains("Sheen") && Sheen == null)
-                    {
-                        Sheen = new Spell.Active(item.SpellSlot);
-                        SheenID = item.Id;
-                        continue;
-                    }
+                else if (item.DisplayName.Contains("Sheen"))
+                {
+                    Sheen = new Spell.Active(item.SpellSlot);
+                    SheenID = item.Id;
+                    continue;
+                }
 
-                    if (item.DisplayName.Contains("Youmuu") && Youmuus == null)
-                    {
-                        Youmuus = new Spell.Active(item.SpellSlot);
-                        YomuusID = item.Id;
-                        continue;
-                    }
+                if (item.DisplayName.Contains("Youmuu"))
+                {
+                    Youmuus = new Spell.Active(item.SpellSlot);
+                    YomuusID = item.Id;
+                    continue;
+                }
 
-                    if (item.DisplayName.Contains("Ruined King") && BOTRK == null)
-                    {
-                        BOTRK = new Spell.Targeted(item.SpellSlot, 550);
-                        BOTRKID = item.Id;
-                        Cutlass = null;
-                        continue;
-                    }
+                if (item.DisplayName.Contains("Ruined King"))
+                {
+                    BOTRK = new Spell.Targeted(item.SpellSlot, 550);
+                    BOTRKID = item.Id;
+                    Cutlass = null;
+                    continue;
+                }
 
-                    else if (item.DisplayName.Contains("Bilgewater Cutlass") && Cutlass == null)
-                    {
-                        Cutlass = new Spell.Targeted(item.SpellSlot, 550);
-                        CutlassID = item.Id;
-                        continue;
-                    }
+                else if (item.DisplayName.Contains("Bilgewater Cutlass"))
+                {
+                    Cutlass = new Spell.Targeted(item.SpellSlot, 550);
+                    CutlassID = item.Id;
+                    continue;
+                }
 
-                    if (item.DisplayName.Contains("Ravenous Hydra") && Hydra == null)
-                    {
-                        Hydra = new Spell.Active(item.SpellSlot, 400);
-                        HydraID = item.Id;
-                        continue;
-                    }
+                if (item.DisplayName.Contains("Ravenous Hydra"))
+                {
+                    Hydra = new Spell.Active(item.SpellSlot, 400);
+                    HydraID = item.Id;
+                    continue;
+                }
 
-                    else if (item.DisplayName.Contains("Tiamat") && Hydra == null)
-                    {
-                        Hydra = new Spell.Active(item.SpellSlot, 400);
-                        HydraID = EloBuddy.ItemId.Ravenous_Hydra_Melee_Only;
-                        continue;
-                    }
+                else if (item.DisplayName.Contains("Tiamat"))
+                {
+                    Hydra = new Spell.Active(item.SpellSlot, 400);
+                    HydraID = EloBuddy.ItemId.Ravenous_Hydra_Melee_Only;
+                    continue;
                 }
             }
 
