@@ -9,20 +9,31 @@ namespace JokerFioraBuddy
 
         private static readonly Menu Menu;
 
+        public static bool UseShieldBlock
+        {
+            get { return Menu["mainUseShieldBlock"].Cast<CheckBox>().CurrentValue; }
+        }
+
         static Config() 
         {
             Menu = MainMenu.AddMenu(MenuName, MenuName.ToLower());
             Menu.AddGroupLabel("Welcome to Joker Fiora Addon!");
             Menu.AddLabel("Features:");
             Menu.AddLabel("- Epic Combo! 100-0 in 2 seconds.");
+            Menu.AddLabel("- Auto Shield Block (W).");
             Menu.AddLabel("- Harass Mode with all spells.");
             Menu.AddLabel("- Last Hit Mode with Q.");
             Menu.AddLabel("- Lane Clear Mode with Q/E.");
+            Menu.AddLabel("- Flee Mode with Q.");
+            Menu.AddLabel("- Smart Target Selector.");
             Menu.AddLabel("- Auto-Ignite!");
-            Menu.AddLabel("- Minion last hit indicator and champion 1 shot combo indicator!");
+            Menu.AddLabel("- Champion 1 shot combo indicator!");
             Menu.AddLabel("All customizable! Featuring Youmuu's Ghostblade / Ravenous Hydra / Blade of the Ruined King");
-            Menu.AddLabel("Credits to: Danny - Main Coder. / Trees - Passive Manager");
+            Menu.AddLabel("Credits to: Danny - Main Coder / Trees - Passive Manager & Shield Block / Fluxy - Target Selector 2");
 
+            Menu.AddSeparator();
+            Menu.AddGroupLabel("Core Features");
+            Menu.Add("mainUseShieldBlock", new CheckBox("Shield Block (Auto W)"));
             Modes.Initialize();
             Drawings.Initialize();
         }
@@ -54,10 +65,16 @@ namespace JokerFioraBuddy
                     get { return Menu["damageKillable"].Cast<CheckBox>().CurrentValue; }
                 }
 
+                public static bool ShowChampionTarget
+                {
+                    get { return Menu["damageChampionTarget"].Cast<CheckBox>().CurrentValue; }
+                }
+
                 static Damage()
                 {
                     Menu.AddGroupLabel("Damage");
                     Menu.Add("damageKillable", new CheckBox("Show text if champion is killable"));
+                    Menu.Add("damageChampionTarget", new CheckBox("Show circle below targeted champion"));
                 }
 
                 public static void Initialize()
@@ -87,7 +104,11 @@ namespace JokerFioraBuddy
                 LastHit.Initialize();
                 Menu.AddSeparator();
 
+                Flee.Initialize();
+                Menu.AddSeparator();
+
                 Perma.Initialize();
+                
             }
 
             public static void Initialize()

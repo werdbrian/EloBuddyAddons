@@ -21,7 +21,8 @@ namespace JokerFioraBuddy
                 new Combo(),
                 new Harass(),
                 new LaneClear(),
-                new LastHit()
+                new LastHit(),
+                new Flee()
             });
 
             Game.OnTick += OnTick;

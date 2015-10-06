@@ -9,6 +9,7 @@ using JokerFioraBuddy.Modes;
 
 using PermaSettings = JokerFioraBuddy.Config.Modes.Perma;
 using ComboSettings = JokerFioraBuddy.Config.Modes.Combo;
+using ShieldSettings = JokerFioraBuddy.Config;
 
 namespace JokerFioraBuddy
 {
@@ -31,6 +32,7 @@ namespace JokerFioraBuddy
             SpellManager.Initialize();
             ModeManager.Initialize();
             PassiveManager.Initialize();
+            TargetSelector2.Initialize();
 
             Text = new Text("", new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
 
@@ -52,17 +54,17 @@ namespace JokerFioraBuddy
             var castUnit = unit;
             var type = args.SData.TargettingType;
 
-            var blockableSpell = unit != null && unit.IsEnemy && SpellBlock.Contains(unit, args);
+            var blockableSpell = unit != null && unit.IsEnemy && SpellBlock.Contains(unit, args) && ShieldSettings.UseShieldBlock;
             
             if (!blockableSpell)
                 return;
 
             if (!unit.IsValidTarget())
             {
-                var target = TargetSelector.SelectedTarget;
+                var target = TargetSelector2.GetTarget(SpellManager.W.Range, DamageType.Mixed);
 
                 if (target == null || !target.IsValidTarget(SpellManager.W.Range))
-                    target = TargetSelector.GetTarget(SpellManager.W.Range, DamageType.Magical);
+                    target = TargetSelector2.GetTarget(SpellManager.W.Range, DamageType.Mixed);
 
                 if (target != null && target.IsValidTarget(SpellManager.W.Range))
                     castUnit = target;

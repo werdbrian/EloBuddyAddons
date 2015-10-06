@@ -16,7 +16,9 @@ namespace JokerFioraBuddy.Modes
         public override void Execute()
         {
 
-            var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+            var target = TargetSelector2.GetTarget(Q.Range, DamageType.Physical);
+
+            Orbwalker.ForcedTarget = target;
 
             if (target != null && target.IsValidTarget(R.Range))
             {

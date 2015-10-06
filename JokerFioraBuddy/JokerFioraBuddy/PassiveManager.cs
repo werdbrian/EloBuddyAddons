@@ -104,7 +104,7 @@ namespace JokerFioraBuddy
 
             public FioraPassive(Obj_GeneralParticleEmitter emitter, bool ultPassive = false)
             {
-                SpawnTime = Game.TicksPerSecond;
+                SpawnTime = Environment.TickCount;
                 IsUltPassive = ultPassive;
                 MaxAliveTime = IsUltPassive ? 8000 : 15000;
                 PassiveDistance = IsUltPassive ? 320 : 200;
@@ -112,7 +112,7 @@ namespace JokerFioraBuddy
 
             private int VitalDuration
             {
-                get { return Game.TicksPerSecond - SpawnTime; }
+                get { return Environment.TickCount - SpawnTime; }
             }
 
             private bool IsVitalIdentified
