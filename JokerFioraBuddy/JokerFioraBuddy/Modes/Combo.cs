@@ -18,8 +18,6 @@ namespace JokerFioraBuddy.Modes
 
             var target = TargetSelector2.GetTarget(Q.Range, DamageType.Physical);
 
-            Orbwalker.ForcedTarget = target;
-
             if (target != null && target.IsValidTarget(R.Range))
             {
 
@@ -65,7 +63,7 @@ namespace JokerFioraBuddy.Modes
                 if (Settings.UseE && E.IsReady() && target.IsValidTarget(E.Range) && !target.IsZombie)
                     E.Cast();
 
-                if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range) && !target.IsZombie)
+                if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range - 35) && !target.IsZombie)
                     W.Cast(target);
 
 

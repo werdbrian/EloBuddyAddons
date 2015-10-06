@@ -25,7 +25,7 @@ namespace JokerFioraBuddy.Modes
 
                 if (Settings.UseTiamatHydra)
                 {
-                    if (PermaActive.Hydra != null && PermaActive.Hydra.IsReady() && minion.IsValidTarget(PermaActive.Hydra.Range) && !minion.IsZombie)
+                    if (PermaActive.Hydra != null && PermaActive.Hydra.IsReady() && minion.IsValidTarget(PermaActive.Hydra.Range - 20) && !minion.IsZombie)
                     {
                         PermaActive.Hydra.Cast();
                         if (minion.IsValidTarget(Player.Instance.GetAutoAttackRange()))
