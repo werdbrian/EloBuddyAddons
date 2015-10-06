@@ -63,26 +63,7 @@ namespace JokerFioraBuddy
 
                     TextKillable.Draw();
                 }
-            }
-
-            if (Settings.ShowMinionsLS)
-            {
-                var minions = ObjectManager.Get<Obj_AI_Base>().OrderBy(m => m.Health).Where(m => m.IsMinion && m.IsEnemy && !m.IsDead & m.IsValid);
-
-                foreach (var minion in minions) 
-                {
-                    var barPosMinion = minion.HPBarPosition;
-                    //TextMinion.Position = new Vector2((int)barPosMinion.X - 15, (int)barPosMinion.Y - 10);
-
-                    if (minion.Health <= Player.Instance.GetSpellDamage(minion, SpellSlot.Q) || minion.Health <= Player.Instance.GetAutoAttackDamage(Player.Instance))
-                    {
-                        //TextMinion.TextValue = "Killable with Last Hit!";
-                        //TextMinion.Draw();
-                        Circle.Draw(SharpDX.Color.LimeGreen, minion.BoundingRadius * 2, minion.Position);
-                    }
-                }
-            }
-            
+            }            
         }
 
         public static void Initialize()

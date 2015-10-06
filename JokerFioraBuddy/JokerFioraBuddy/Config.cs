@@ -54,16 +54,10 @@ namespace JokerFioraBuddy
                     get { return Menu["damageKillable"].Cast<CheckBox>().CurrentValue; }
                 }
 
-                public static bool ShowMinionsLS
-                {
-                    get { return Menu["damageMinionsLS"].Cast<CheckBox>().CurrentValue; }
-                }
-
                 static Damage()
                 {
                     Menu.AddGroupLabel("Damage");
                     Menu.Add("damageKillable", new CheckBox("Show text if champion is killable"));
-                    Menu.Add("damageMinionsLS", new CheckBox("Show green circle if minion dies to last hit"));
                 }
 
                 public static void Initialize()
