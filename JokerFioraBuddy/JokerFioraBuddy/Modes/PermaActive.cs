@@ -3,10 +3,11 @@ using System;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
+using SharpDX;
 
 using Settings = JokerFioraBuddy.Config.Modes.Perma;
 using ComboSettings = JokerFioraBuddy.Config.Modes.Combo;
-using SharpDX;
+
 
 
 namespace JokerFioraBuddy.Modes

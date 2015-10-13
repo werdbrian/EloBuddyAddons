@@ -37,7 +37,6 @@ namespace JokerFioraBuddy
             Text = new Text("", new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
 
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
-            Drawing.OnDraw += OnDraw;
         }
 
         static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -103,11 +102,6 @@ namespace JokerFioraBuddy
         public static bool CastW(Obj_AI_Base target)
         {
             return target.IsValidTarget(SpellManager.W.Range) ? SpellManager.W.Cast(target) : SpellManager.W.Cast(target.ServerPosition);
-        }
-
-        static void OnDraw(EventArgs args)
-        {
-
         }
     }
 }

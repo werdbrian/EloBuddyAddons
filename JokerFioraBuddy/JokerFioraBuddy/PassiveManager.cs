@@ -39,7 +39,6 @@ namespace JokerFioraBuddy
 
             var pos = Prediction.Position.PredictUnitPosition(target, SpellManager.Q.CastDelay);
             var d = passive.PassiveDistance;
-
             if (passive.Name.Contains("NE"))
                 pos.Y += d;
 
@@ -73,15 +72,17 @@ namespace JokerFioraBuddy
             if (emitter == null || !emitter.IsValid)
                 return;
 
-            if (emitter.Name.Contains("Fiora_Base_Passive") && DirectionList.Any(emitter.Name.Contains) && !emitter.Name.Contains("Warning"))
-                PassiveList.Add(new FioraPassive(emitter));
+            if (emitter.Name.Contains("Fiora_Base_Passive") && DirectionList.Any(emitter.Name.Contains) && !emitter.Name.Contains("Warning") && emitter.NetworkId != 0)
+                PassiveList.Add(new FioraPassive(emitter)); 
 
-            if (emitter.Name.Contains("Fiora_Base_R_Mark") || (emitter.Name.Contains("Fiora_Base_R") && emitter.Name.Contains("Timeout")))
+            if (emitter.Name.Contains("Fiora_Base_R_Mark") && emitter.NetworkId != 0 || (emitter.Name.Contains("Fiora_Base_R") && emitter.Name.Contains("Timeout")) && emitter.NetworkId != 0)
                 PassiveList.Add(new FioraPassive(emitter, true));
         }
 
         static void OnDelete(GameObject sender, EventArgs args)
         {
+            PassiveList.RemoveAll(obj => obj.NetworkId.Equals(0));
+
             if (sender.Name.Contains("Fiora_Base_Passive") && DirectionList.Any(sender.Name.Contains) && !sender.Name.Contains("Warning"))
                 PassiveList.RemoveAll(obj => obj.NetworkId.Equals(sender.NetworkId));
 
@@ -127,7 +128,7 @@ namespace JokerFioraBuddy
 
             public bool IsActive
             {
-                get { return IsValid && IsVisible && !IsVitalTimedOut; }
+                get { return IsValid && !IsVitalTimedOut; }
             }
         }
     }

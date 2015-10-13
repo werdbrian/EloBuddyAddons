@@ -40,9 +40,7 @@ namespace JokerFioraBuddy
                 try
                 {
                     if (mode.ShouldBeExecuted())
-                    {
                         mode.Execute();
-                    }
                 }
                 catch (Exception e)
                 {
