@@ -29,6 +29,7 @@ namespace JokerFioraBuddy
                 return;
 
             Config.Initialize();
+            ItemManager.Initialize();
             SpellManager.Initialize();
             ModeManager.Initialize();
             PassiveManager.Initialize();
@@ -37,6 +38,8 @@ namespace JokerFioraBuddy
             Text = new Text("", new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
 
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+
+            Chat.Print("<font color = \"#6B9FE3\">Joker Fiora 1.06</font><font color = \"#E3AF6B\"> by JokerArt</font>. Report any bugs please! Thanks and enjoy.");
         }
 
         static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)

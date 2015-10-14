@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="DamageIndicator.cs" />
+    <Compile Include="ItemManager.cs" />
     <Compile Include="ModeManager.cs" />
     <Compile Include="Modes\Combo.cs" />
     <Compile Include="Modes\Flee.cs" />

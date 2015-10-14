@@ -29,7 +29,7 @@ namespace JokerFioraBuddy
             Menu.AddLabel("- Auto-Ignite!");
             Menu.AddLabel("- Champion 1 shot combo indicator!");
             Menu.AddLabel("All customizable! Featuring Youmuu's Ghostblade / Ravenous Hydra / Blade of the Ruined King");
-            Menu.AddLabel("Credits to: Danny - Main Coder / Trees - Passive Manager & Shield Block / Fluxy - Target Selector 2");
+            Menu.AddLabel("Credits to: Danny - Main Coder / Trees - Shield Block / Fluxy - Target Selector 2");
 
             Menu.AddSeparator();
             Menu.AddGroupLabel("Core Features");

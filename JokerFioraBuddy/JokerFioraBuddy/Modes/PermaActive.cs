@@ -15,21 +15,6 @@ namespace JokerFioraBuddy.Modes
     public sealed class PermaActive : ModeBase
     {
 
-        public static Spell.Active Hydra { get; private set; }
-        public static Spell.Targeted BOTRK { get; private set; }
-        public static Spell.Targeted Cutlass { get; private set; }
-        public static Spell.Active Youmuus { get; private set; }
-        public static Spell.Active Sheen { get; private set; }
-        public static Spell.Active TriForce { get; private set; }
-
-        public static ItemId HydraID { get; private set; }
-        public static ItemId BOTRKID { get; private set; }
-        public static ItemId CutlassID { get; private set; }
-        public static ItemId YomuusID { get; private set; }
-        public static ItemId SheenID { get; private set; }
-        public static ItemId TriForceID { get; private set; }
-
-
         public override bool ShouldBeExecuted()
         {
             return true;
@@ -37,59 +22,6 @@ namespace JokerFioraBuddy.Modes
         
         public override void Execute()
         {
-            foreach (InventorySlot item in ObjectManager.Player.InventoryItems)
-            {
-                if (item.DisplayName.Contains("Trinity Force"))
-                {
-                    TriForce = new Spell.Active(item.SpellSlot);
-                    TriForceID = item.Id;
-                    continue;
-                }
-
-                else if (item.DisplayName.Contains("Sheen"))
-                {
-                    Sheen = new Spell.Active(item.SpellSlot);
-                    SheenID = item.Id;
-                    continue;
-                }
-
-                if (item.DisplayName.Contains("Youmuu"))
-                {
-                    Youmuus = new Spell.Active(item.SpellSlot);
-                    YomuusID = item.Id;
-                    continue;
-                }
-
-                if (item.DisplayName.Contains("Ruined King"))
-                {
-                    BOTRK = new Spell.Targeted(item.SpellSlot, 550);
-                    BOTRKID = item.Id;
-                    Cutlass = null;
-                    continue;
-                }
-
-                else if (item.DisplayName.Contains("Bilgewater Cutlass"))
-                {
-                    Cutlass = new Spell.Targeted(item.SpellSlot, 550);
-                    CutlassID = item.Id;
-                    continue;
-                }
-
-                if (item.DisplayName.Contains("Ravenous Hydra"))
-                {
-                    Hydra = new Spell.Active(item.SpellSlot, 400);
-                    HydraID = item.Id;
-                    continue;
-                }
-
-                else if (item.DisplayName.Contains("Tiamat"))
-                {
-                    Hydra = new Spell.Active(item.SpellSlot, 400);
-                    HydraID = EloBuddy.ItemId.Ravenous_Hydra_Melee_Only;
-                    continue;
-                }
-            }
-
             DamageIndicator.DamageToUnit = GetComboDamage;
 
             if (ObjectManager.Player.IsDead || !IG.IsReady() || !Settings.UseIgnite) return;
@@ -119,19 +51,22 @@ namespace JokerFioraBuddy.Modes
         {
             var d = 2 * Player.Instance.GetAutoAttackDamage(unit);
 
-            if (BOTRK != null && BOTRK.IsReady())
-                d += Player.Instance.GetItemDamage(unit, BOTRKID);
+            if (ItemManager.BOTRK.IsReady() && ItemManager.BOTRK.IsOwned())
+                d += Player.Instance.GetItemDamage(unit, ItemId.Blade_of_the_Ruined_King);
 
-            if (Cutlass != null && Cutlass.IsReady())
-                d += Player.Instance.GetItemDamage(unit, CutlassID);
+            if (ItemManager.Cutl.IsReady() && ItemManager.Cutl.IsOwned())
+                d += Player.Instance.GetItemDamage(unit, ItemId.Bilgewater_Cutlass);
 
-            if (Hydra != null && Hydra.IsReady())
-                d += Player.Instance.GetItemDamage(unit, HydraID);
+            if (ItemManager.Hydra.IsReady() && ItemManager.Hydra.IsOwned())
+                d += Player.Instance.GetItemDamage(unit, ItemId.Ravenous_Hydra_Melee_Only);
 
-            if (Sheen != null && Sheen.IsReady())
+            if (ItemManager.Tiamat.IsReady() && ItemManager.Tiamat.IsOwned())
+                d += Player.Instance.GetItemDamage(unit, ItemId.Ravenous_Hydra_Melee_Only);
+
+            if (ItemManager.Sheen.IsReady() && ItemManager.Sheen.IsOwned())
                 d += Player.Instance.GetAutoAttackDamage(unit) + Player.Instance.BaseAttackDamage * 2;
 
-            if (TriForce != null && TriForce.IsReady())
+            if (ItemManager.TriForce.IsReady() && ItemManager.TriForce.IsOwned())
                 d += Player.Instance.GetAutoAttackDamage(unit) + Player.Instance.BaseAttackDamage * 3;
 
             if (Settings.UseIgnite && SpellManager.IG.IsReady())
@@ -149,12 +84,12 @@ namespace JokerFioraBuddy.Modes
             if (maxStacks == 0)
             {
                 if (SpellManager.R.IsReady())
-                    d += (float)unit.GetPassiveDamage(4);
+                    d += (float)PassiveManager.GetPassiveDamage(unit, 4);
                 else
-                    d += (float)unit.GetPassiveDamage();
+                    d += (float)PassiveManager.GetPassiveDamage(unit, PassiveManager.GetPassiveCount(unit));
             }
             else
-                d += (float)unit.GetPassiveDamage(maxStacks);
+                d += (float)PassiveManager.GetPassiveDamage(unit, maxStacks);
             if (SpellManager.R.IsReady())
                 d += Player.Instance.GetSpellDamage(unit, SpellSlot.R);
 
