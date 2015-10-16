@@ -25,12 +25,8 @@ namespace JokerFioraBuddy
             E = new Spell.Active(SpellSlot.E, 200);
             R = new Spell.Targeted(SpellSlot.R, 550);
 
-            if (ObjectManager.Player.GetSpellSlotFromName("summonerdot") == SpellSlot.Unknown)
-            {
-                return;
-            }
-
-            IG = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 550);
+            if (!(ObjectManager.Player.GetSpellSlotFromName("summonerdot") == SpellSlot.Unknown))
+                IG = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 550);
 
         }
 

@@ -115,8 +115,8 @@ namespace JokerFioraBuddy
             {
                 if (spell.IsAutoAttack)
                 {
-                    if (!args.SData.ConsideredAsAutoAttack)
-                        continue;
+                    //if (!args.SData.ConsideredAsAutoAttack)
+                    //    continue;
 
                     var condition = spell.AutoAttackName.Equals(args.SData.Name);
 

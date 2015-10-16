@@ -81,8 +81,8 @@ namespace JokerFioraBuddy
             else if (unit.ChampionName.Equals("Bard") && type.Equals(SpellDataTargetType.Location) && args.End.Distance(Player.Instance.ServerPosition) < 300)
                 CastW(castUnit);
 
-            else if (args.SData.ConsideredAsAutoAttack && args.Target != null && args.Target.IsMe)
-                CastW(castUnit);
+            //else if (args.SData.ConsideredAsAutoAttack && args.Target != null && args.Target.IsMe)
+            //    CastW(castUnit);
 
             else if (type.Equals(SpellDataTargetType.SelfAoe) && unit.Distance(Player.Instance.ServerPosition) < args.SData.CastRange + args.SData.CastRadius / 2)
                 CastW(castUnit);
