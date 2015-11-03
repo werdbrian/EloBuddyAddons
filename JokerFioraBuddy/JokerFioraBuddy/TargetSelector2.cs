@@ -14,14 +14,13 @@ namespace JokerFioraBuddy
     public static class TargetSelector2
     {
         private static AIHeroClient _target;
+        private static int _lastClick;
 
         static TargetSelector2()
         {
-            Game.OnUpdate += OnUpdate;
+            Game.OnWndProc += OnWndProc;
             Drawing.OnDraw += OnDraw;
-        }
-
-   
+        }  
 
         public static AIHeroClient GetTarget(float range, DamageType type, Vector2 secondaryPos = new Vector2())
         {
@@ -40,9 +39,20 @@ namespace JokerFioraBuddy
                 Circle.Draw(Color.Cyan, 100, _target.Position);
         }
 
-        static void OnUpdate(EventArgs args)
+        static void OnWndProc(WndEventArgs args)
         {
-            _target = ObjectManager.Get<AIHeroClient>().OrderBy(a => a.Distance(ObjectManager.Player)).FirstOrDefault(a => a.IsEnemy && a.Distance(ObjectManager.Player) <= SpellManager.R.Range);
+            if (args.Msg != 0x202) return;
+            if (_lastClick + 500 <= Environment.TickCount)
+            {
+                _target =
+                    ObjectManager.Get<AIHeroClient>()
+                        .OrderBy(a => a.Distance(ObjectManager.Player))
+                        .FirstOrDefault(a => a.IsEnemy && a.Distance(Game.CursorPos) < 200);
+                if (_target != null)
+                {
+                    _lastClick = Environment.TickCount;
+                }
+            }
         }
 
         public static void Initialize()
