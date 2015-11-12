@@ -9,7 +9,7 @@ namespace JokerFioraBuddy
 {
     public static class Config
     {
-        private const string MenuName = "Joker Fiora 1.06";
+        private const string MenuName = "Joker Fiora 1.07";
 
         private static readonly Menu Menu;
 
