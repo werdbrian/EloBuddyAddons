@@ -75,9 +75,6 @@ namespace JokerFioraBuddy.Modes
             if (ComboSettings.UseQ && SpellManager.Q.IsReady())
                 d += Player.Instance.GetSpellDamage(unit, SpellSlot.Q);
 
-            if (ComboSettings.UseW && SpellManager.W.IsReady())
-                d += Player.Instance.GetSpellDamage(unit, SpellSlot.W);
-
             if (ComboSettings.UseE && SpellManager.E.IsReady())
                 d += 2 * Player.Instance.GetAutoAttackDamage(unit);
 

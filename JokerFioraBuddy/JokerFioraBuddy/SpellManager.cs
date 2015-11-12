@@ -7,6 +7,7 @@ using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
+using SharpDX;
 
 namespace JokerFioraBuddy
 {
@@ -18,12 +19,17 @@ namespace JokerFioraBuddy
         public static Spell.Targeted R { get; private set; }
         public static Spell.Targeted IG { get; private set; }
 
+        public static float QSkillshotRange = 400;
+        public static float QCircleRadius = 350;
         static SpellManager()
-        {  
-            Q = new Spell.Skillshot(SpellSlot.Q, 600, SkillShotType.Circular, 250, int.MaxValue);
-            W = new Spell.Skillshot(SpellSlot.W, 750, SkillShotType.Linear, 250, int.MaxValue);
+        {
+            Q = new Spell.Skillshot(SpellSlot.Q, (uint)(QSkillshotRange + QCircleRadius), SkillShotType.Linear, 250, 500, 0);
+            W = new Spell.Skillshot(SpellSlot.W, 750, SkillShotType.Linear, 500, 3200, 70);
             E = new Spell.Active(SpellSlot.E, 200);
-            R = new Spell.Targeted(SpellSlot.R, 550);
+            E.CastDelay = 0;
+
+            R = new Spell.Targeted(SpellSlot.R, 500);
+            R.CastDelay = (int).066f;
 
             if (!(ObjectManager.Player.GetSpellSlotFromName("summonerdot") == SpellSlot.Unknown))
                 IG = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 550);

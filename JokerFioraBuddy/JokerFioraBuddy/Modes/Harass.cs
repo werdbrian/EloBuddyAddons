@@ -30,9 +30,6 @@ namespace JokerFioraBuddy.Modes
                 if (Settings.UseE && E.IsReady() && target.IsValidTarget(E.Range) && !target.IsZombie && Player.Instance.ManaPercent > Settings.Mana)
                     E.Cast();
 
-                if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range - 35) && !target.IsZombie && Player.Instance.ManaPercent > Settings.Mana)
-                    SpellManager.castW();
-
                 if (Settings.UseR && R.IsReady() && target.IsValidTarget(R.Range) && !target.IsZombie && Player.Instance.ManaPercent > Settings.Mana)
                     SpellManager.castR();
             }

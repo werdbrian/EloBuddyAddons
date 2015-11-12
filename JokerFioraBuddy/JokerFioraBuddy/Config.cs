@@ -1,5 +1,9 @@
-﻿using EloBuddy.SDK.Menu;
+﻿using EloBuddy;
+using EloBuddy.SDK;
+using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using System;
+using System.Linq;
 
 namespace JokerFioraBuddy
 {
@@ -31,10 +35,8 @@ namespace JokerFioraBuddy
             Menu.AddLabel("All customizable! Featuring Youmuu's Ghostblade / Ravenous Hydra / Blade of the Ruined King");
             Menu.AddLabel("Credits to: Danny - Main Coder / Trees - Shield Block / Fluxy - Target Selector 2");
 
-            Menu.AddSeparator();
-            Menu.AddGroupLabel("Core Features");
-            Menu.Add("mainUseShieldBlock", new CheckBox("Shield Block (Auto W)"));
             Modes.Initialize();
+            ShieldBlock.Initialize();
             Drawings.Initialize();
         }
 
@@ -45,42 +47,53 @@ namespace JokerFioraBuddy
 
         public static class Drawings
         {
-            private static readonly Menu Menu;
+            public static readonly Menu Menu;
+            public static bool ShowKillable
+            {
+                get { return Menu["damageKillable"].Cast<CheckBox>().CurrentValue; }
+            }
+
+            public static bool ShowChampionTarget
+            {
+                get { return Menu["damageChampionTarget"].Cast<CheckBox>().CurrentValue; }
+            }
 
             static Drawings()
             {
                 Menu = Config.Menu.AddSubMenu("Drawings");
-
+                Menu.AddGroupLabel("Drawings");
+                Menu.Add("damageKillable", new CheckBox("Show text if champion is killable"));
+                Menu.Add("damageChampionTarget", new CheckBox("Show circle below targeted champion"));
             }
 
             public static void Initialize()
             {
 
             }
+        }
 
-            public static class Damage
+        public static class ShieldBlock
+        {
+            public static readonly Menu Menu;
+
+            public static bool BlockSpells
             {
-                public static bool ShowKillable
-                {
-                    get { return Menu["damageKillable"].Cast<CheckBox>().CurrentValue; }
-                }
+                get { return Menu["blockSpellsW"].Cast<CheckBox>().CurrentValue; }
+            }
 
-                public static bool ShowChampionTarget
-                {
-                    get { return Menu["damageChampionTarget"].Cast<CheckBox>().CurrentValue; }
-                }
+            static ShieldBlock()
+            {
+                Menu = Config.Menu.AddSubMenu("Spell Block");
+                Menu.AddGroupLabel("Core Options");
+                Menu.Add("blockSpellsW", new CheckBox("Auto-Block Spells (W)"));
+                Menu.AddSeparator();
 
-                static Damage()
-                {
-                    Menu.AddGroupLabel("Damage");
-                    Menu.Add("damageKillable", new CheckBox("Show text if champion is killable"));
-                    Menu.Add("damageChampionTarget", new CheckBox("Show circle below targeted champion"));
-                }
+                Menu.AddGroupLabel("Enemies spells to block");
+            }
 
-                public static void Initialize()
-                {
+            public static void Initialize()
+            {
 
-                }
             }
         }
 
@@ -123,11 +136,6 @@ namespace JokerFioraBuddy
                     get { return Menu["comboUseQ"].Cast<CheckBox>().CurrentValue; }
                 }
 
-                public static bool UseW
-                {
-                    get { return Menu["comboUseW"].Cast<CheckBox>().CurrentValue; }
-                }
-
                 public static bool UseE
                 {
                     get { return Menu["comboUseE"].Cast<CheckBox>().CurrentValue; }
@@ -157,7 +165,6 @@ namespace JokerFioraBuddy
                 {
                     Menu.AddGroupLabel("Combo");
                     Menu.Add("comboUseQ", new CheckBox("Use Q"));
-                    Menu.Add("comboUseW", new CheckBox("Use W"));
                     Menu.Add("comboUseE", new CheckBox("Use E"));
                     Menu.Add("comboUseR", new CheckBox("Use R"));
                     Menu.Add("comboUseTiamatHydra", new CheckBox("Use Tiamat / Hydra"));
@@ -176,11 +183,6 @@ namespace JokerFioraBuddy
                 public static bool UseQ
                 {
                     get { return Menu["harassUseQ"].Cast<CheckBox>().CurrentValue; }
-                }
-
-                public static bool UseW
-                {
-                    get { return Menu["harassUseW"].Cast<CheckBox>().CurrentValue; }
                 }
 
                 public static bool UseE
@@ -207,7 +209,6 @@ namespace JokerFioraBuddy
                 {
                     Menu.AddGroupLabel("Harrass");
                     Menu.Add("harassUseQ", new CheckBox("Use Q"));
-                    Menu.Add("harassUseW", new CheckBox("Use W"));
                     Menu.Add("harassUseE", new CheckBox("Use E"));
                     Menu.Add("harassUseR", new CheckBox("Use R", false));
                     Menu.Add("harassUseTiamatHydra", new CheckBox("Use Tiamat / Hydra"));

@@ -18,6 +18,7 @@ namespace JokerFioraBuddy.Modes
 
             var target = TargetSelector2.GetTarget(Q.Range, DamageType.Physical);
 
+
             if (target != null && target.IsValidTarget(R.Range))
             {
                 PassiveManager.castAutoAttack(target);
@@ -36,9 +37,6 @@ namespace JokerFioraBuddy.Modes
 
                 if (Settings.UseE && E.IsReady() && target.IsValidTarget(E.Range) && !target.IsZombie)
                     E.Cast();
-
-                if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range - 35) && !target.IsZombie)
-                    SpellManager.castW();
 
                 if (Settings.UseR && R.IsReady() && target.IsValidTarget(R.Range) && !target.IsZombie)
                     SpellManager.castR();

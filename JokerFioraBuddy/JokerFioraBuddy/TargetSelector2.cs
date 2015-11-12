@@ -7,7 +7,7 @@ using EloBuddy.SDK.Events;
 using SharpDX;
 using JokerFioraBuddy.Modes;
 
-using Settings = JokerFioraBuddy.Config.Drawings.Damage;
+using Settings = JokerFioraBuddy.Config.Drawings;
 
 namespace JokerFioraBuddy
 {

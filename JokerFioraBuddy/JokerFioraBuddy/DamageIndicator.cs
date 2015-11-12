@@ -10,7 +10,7 @@ using EloBuddy.SDK.Rendering;
 using System.Drawing;
 using SharpDX;
 
-using Settings = JokerFioraBuddy.Config.Drawings.Damage;
+using Settings = JokerFioraBuddy.Config.Drawings;
 namespace JokerFioraBuddy
 {
     public static class DamageIndicator
@@ -28,8 +28,8 @@ namespace JokerFioraBuddy
 
         static DamageIndicator()
         {
-            TextKillable = new Text("", new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
-            TextMinion = new Text("", new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.LimeGreen };
+            TextKillable = new Text("", new Font(FontFamily.GenericSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
+            TextMinion = new Text("", new Font(FontFamily.GenericSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.LimeGreen };
 
             Drawing.OnDraw += Drawing_OnDraw;
         }
