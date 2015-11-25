@@ -64,13 +64,6 @@ namespace JokerFioraBuddy
                 return;
             }
 
-            // spell handled by evade
-            if (SpellDatabase.GetByName(args.SData.Name) != null)
-                return;
-
-            if (!SpellBlock.Contains(unit, args))
-                return;
-
             var castUnit = unit;
             var type = args.SData.TargettingType;
 
